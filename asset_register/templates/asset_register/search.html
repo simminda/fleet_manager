@@ -1,0 +1,38 @@
+{% extends 'asset_register/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="search-results">
+    <br />
+    <h2>Search Results for "{{ query }}"</h2>
+    <br />
+    {% if results %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Vehicle Type</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for asset in results %}
+            <tr>
+                <td>{{ asset.year }}</td>
+                <td>{{ asset.make }}</td>
+                <td>{{ asset.model }}</td>
+                <td>{{ asset.vehicle_type }}</td>
+                <td>
+                    <a href="{% url 'asset-detail' asset.id %}" class="btn btn-info">View Details</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No results found for "{{ query }}".</p>
+    {% endif %}
+</div>
+{% endblock %}

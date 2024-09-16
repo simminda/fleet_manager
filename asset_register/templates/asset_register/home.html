@@ -1,0 +1,36 @@
+{% extends 'asset_register/base.html' %} {% load static %} {% load humanize %}
+
+<!-- Keep background from appearing on other pages as well. -->
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" />
+{% endblock custom_css %} {% block content %}
+
+<!-- Vehicle Summary -->
+<div class="vehicle-summary">
+  <br><br>
+  <h2>Vehicle Summary</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Vehicle Type</th>
+        <th>Count</th>
+        <th>Total Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for summary in vehicle_summary %}
+      <tr>
+        <td>{{ summary.vehicle_type }}</td>
+        <td>{{ summary.count }}</td>
+        <td>R{{ summary.total_cost|floatformat:2|intcomma }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3">No vehicle summary available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

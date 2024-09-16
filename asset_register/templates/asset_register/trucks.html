@@ -1,0 +1,51 @@
+{% extends 'asset_register/base.html' %}
+{% load static %} {% load humanize %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" />
+{% endblock custom_css %}
+
+{% block content %}
+
+<!-- Truck List -->
+<div class="asset-list">
+  <br />
+  <h2>Truck List</h2>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Year</th>
+        <th>Make</th>
+        <th>Model</th>
+        <th>Vehicle Type</th>
+        <th>Sub-Category</th>
+        <th>Classification</th>
+        <th>Status</th>
+        <th>VIN</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for asset in assets %}
+      <tr>
+        <td>{{ asset.year }}</td>
+        <td>{{ asset.make }}</td>
+        <td>{{ asset.model }}</td>
+        <td>{{ asset.vehicle_type }}</td>
+        <td>{{ asset.sub_category }}</td>
+        <td>{{ asset.classification }}</td>
+        <td>{{ asset.status }}</td>
+        <td>{{ asset.vin }}</td>
+        <td>
+          <a href="{% url 'asset-detail' asset.id %}" class="btn btn-info">VIEW</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="8">No trucks available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

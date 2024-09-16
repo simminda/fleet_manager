@@ -1,0 +1,112 @@
+{% extends 'asset_register/base.html' %}
+{% load static %} {% load humanize %}
+
+
+{% block content %}
+<br />
+<h1>Asset Details</h1>
+
+<br />
+<h2>Basic Asset Info</h2>
+<ul>
+    <li>Year: {{ asset.year }}</li>
+    <li>Make: {{ asset.make }}</li>
+    <li>Model: {{ asset.model }}</li>
+    <li>Vehicle Type: {{ asset.vehicle_type }}</li>
+    <li>Sub Category: {{ asset.sub_category }}</li>
+    <li>Classification: {{ asset.classification }}</li>
+    <li>Status: {{ asset.status }}</li>
+    <li>VIN: {{ asset.vin }}</li>
+</ul>
+
+<h2>Purchase Details</h2>
+<ul>
+    <li>Purchase Date: {{ purchase_details.purchase_date }}</li>
+    <li>Dealership: {{ purchase_details.dealership }}</li>
+    <li>Invoice No: {{ purchase_details.invoice_no }}</li>
+    <li>Cost Price: R{{ purchase_details.cost_price|floatformat:2|intcomma }}</li>
+    <li>Discount Fee: R{{ purchase_details.disc_fee|floatformat:2|intcomma }}</li>
+    <li>Discount Expiry Date: {{ purchase_details.disc_expiry_date }}</li>
+</ul>
+
+<h2>Financing Details</h2>
+<ul>
+    {% for finance in financing_details %}
+    <li>Funding Institution: {{ finance.funding_institution }}</li>
+    <li>Loan Reference Number: {{ finance.loan_ref_number }}</li>
+    <li>Loan End Date: {{ finance.loan_end_date }}</li>
+    <li>Loan Terms: {{ finance.loan_terms }} months</li>
+    <li>Installments: R{{ finance.installments|floatformat:2|intcomma }}</li>
+    <li>Registration Number: {{ finance.reg_no }}</li>
+    <li>Fleet Number: {{ finance.fleet_no }}</li>
+    {% empty %}
+    <li>No financing details available for this asset.</li>
+    {% endfor %}
+</ul>
+<br />
+
+<!-- Edit button (visible to admin only) -->
+{% if user.is_superuser %}
+<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editAssetModal">
+    Edit Asset
+</button>
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="editAssetModal" tabindex="-1" aria-labelledby="editAssetModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAssetModalLabel">Edit Asset</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'edit_asset' asset.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Year</label>
+                        <input type="number" class="form-control" id="year" name="year" value="{{ asset.year }}"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="make" class="form-label">Make</label>
+                        <input type="text" class="form-control" id="make" name="make" value="{{ asset.make }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="model" class="form-label">Model</label>
+                        <input type="text" class="form-control" id="model" name="model" value="{{ asset.model }}"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="vehicle_type" class="form-label">Vehicle Type</label>
+                        <input type="text" class="form-control" id="vehicle_type" name="vehicle_type"
+                            value="{{ asset.vehicle_type }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sub_category" class="form-label">Sub Category</label>
+                        <input type="text" class="form-control" id="sub_category" name="sub_category"
+                            value="{{ asset.sub_category }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="classification" class="form-label">Classification</label>
+                        <input type="text" class="form-control" id="classification" name="classification"
+                            value="{{ asset.classification }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <input type="text" class="form-control" id="status" name="status" value="{{ asset.status }}"
+                            required>
+                    </div>
+                    <!-- VIN is not editable -->
+                    <div class="mb-3">
+                        <label for="vin" class="form-label">VIN</label>
+                        <input type="text" class="form-control" id="vin" name="vin" value="{{ asset.vin }}" readonly>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

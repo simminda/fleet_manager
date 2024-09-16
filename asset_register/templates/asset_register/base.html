@@ -1,0 +1,250 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" />
+  <!-- Bootstrap Font Icon CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+
+  <!-- Custom styles CSS -->
+  {% block custom_css %} {% endblock custom_css %}
+
+  <title>Dashboard</title>
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}" />
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+  <header>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="navbar-header">
+            <img id="myLogo" src="{% static 'logo.png' %}" alt="my logo" height="45" />
+          </div>
+
+          <!-- Authentication  -->
+          <ul class="navbar-nav ms-auto">
+            {% if user.is_authenticated %}
+            <!-- Search Button -->
+            <form class="d-flex" role="search" method="get" action="{% url 'search' %}">
+              <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search" />
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            <span>&emsp;</span>
+            <!-- Auth Links -->
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'logout' %}">Logout</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'edit_profile' %}">Edit Profile</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'login' %}"><i class="bi bi-person-circle"> Login</i></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div id="wrapper">
+    <!-- SIDE BAR -->
+    <div class="sidebar bg-light border-end">
+      <!-- Home Button -->
+      <div class="accordion-item" style="padding-top: 50px; ">
+        <h2 class="accordion-header" id="headingHome">
+          <button class="accordion-button" style="
+                padding-left: 1.25rem;
+                background-color: white;
+                padding-top: 15px;
+                padding-bottom: 15px; 
+              ">
+            <a href="/" style="text-decoration: none; color: #000;"><i class="bi bi-house-door-fill"> </i>Home</a>
+          </button>
+        </h2>
+      </div>
+      <!-- Drop Buttons -->
+      <div class="accordion" id="sidebarAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTrucks">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseTrucks" aria-expanded="false" aria-controls="collapseTrucks">
+              <i class="bi bi-truck-front-fill"> </i>&nbsp;Trucks
+            </button>
+          </h2>
+          <div id="collapseTrucks" class="accordion-collapse collapse" aria-labelledby="headingTrucks"
+            data-bs-parent="#sidebarAccordion">
+            <div class="accordion-body">
+              <ul class="list-group">
+                <li class="list-group-item"><a href="#">Standard</a></li>
+                <li class="list-group-item"><a href="#">PBS</a></li>
+                <li class="list-group-item">
+                  <a href="{% url 'trucks' %}">All</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTrailers">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseTrailers" aria-expanded="false" aria-controls="collapseTrailers">
+              <i class="bi bi-chevron-double-right"> </i>
+              &nbsp;Trailers
+            </button>
+          </h2>
+          <div id="collapseTrailers" class="accordion-collapse collapse" aria-labelledby="headingTrailers"
+            data-bs-parent="#sidebarAccordion">
+            <div class="accordion-body">
+              <ul class="list-group">
+                <li class="list-group-item"><a href="#">Standard</a></li>
+                <li class="list-group-item"><a href="#">PBS</a></li>
+                <li class="list-group-item"><a href="#">All</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingLightVehicles">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseLightVehicles" aria-expanded="false" aria-controls="collapseLightVehicles">
+              <i class="bi bi-car-front-fill"> </i>&nbsp;Light Vehicles
+            </button>
+          </h2>
+          <div id="collapseLightVehicles" class="accordion-collapse collapse" aria-labelledby="headingLightVehicles"
+            data-bs-parent="#sidebarAccordion">
+            <div class="accordion-body">
+              <ul class="list-group">
+                <li class="list-group-item"><a href="#">Bakkies</a></li>
+                <li class="list-group-item"><a href="#">Other</a></li>
+                <li class="list-group-item">
+                  <a href="#">All Light Vehicles</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingSpecial">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseSpecial" aria-expanded="false" aria-controls="collapseSpecial">
+              <i class="bi bi-star-fill"> </i>&nbsp;Special
+            </button>
+          </h2>
+          <div id="collapseSpecial" class="accordion-collapse collapse" aria-labelledby="headingSpecial"
+            data-bs-parent="#sidebarAccordion">
+            <div class="accordion-body">
+              <ul class="list-group">
+                <li class="list-group-item"><a href="#">All Special</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingInactive">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseInactive" aria-expanded="false" aria-controls="collapseInactive">
+              <i class="bi bi-file-earmark-x-fill"> </i>&nbsp;Inactive
+            </button>
+          </h2>
+          <div id="collapseInactive" class="accordion-collapse collapse" aria-labelledby="headingInactive"
+            data-bs-parent="#sidebarAccordion">
+            <div class="accordion-body">
+              <ul class="list-group">
+                <li class="list-group-item"><a href="#">All Inactive</a></li>
+              </ul>
+            </div>
+          </div>
+          <br />
+          <!-- Disc Expiry/Licensing -->
+          <div class="accordion-item" style="
+                border-top: solid 1px rgb(219, 219, 219);
+                margin-top: -20px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+              ">
+            <a href="{% url 'licensing' %}" class="accordian-button"
+              style="color: black; text-decoration: none; padding-left: 20px">
+              <i class="bi bi-disc-fill"> </i>Licensing
+            </a>
+          </div>
+          <!-- Financed Vehicles -->
+          <div class="accordion-item" style="
+                border-top: solid 1px rgb(219, 219, 219);
+                padding-top: 15px;
+                padding-bottom: 15px;
+              ">
+            <a href="{% url 'finance_summary' %}" class="accordian-button"
+              style="color: black; text-decoration: none; padding-left: 20px">
+              <i class="bi bi-bank2"></i>&nbsp;Financed Vehicles
+            </a>
+          </div>
+        </div>
+      </div>
+      <img src="{% static 'mercedes-actros-mp3.jpg' %}" alt="TDS Truck Trailer" style="
+            position: fixed;
+            bottom: 0;
+            max-width: 250px;
+            filter: grayscale(70%);
+          " />
+    </div>
+    <!--End Sidebar-->
+    <!-- Content -->
+    <div class="container">
+      {% if messages %}
+      <div class="alert-container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %} {% block content %} {% endblock %}
+    </div>
+  </div>
+
+  <!-- Necessary JavaScript for bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const alerts = document.querySelectorAll(".alert-container .alert");
+      alerts.forEach((alert) => {
+        setTimeout(() => {
+          alert.classList.add("fade-out");
+        }, 3000);
+      });
+    });
+  </script>
+</body>
+
+</html>
